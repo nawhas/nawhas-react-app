@@ -8,6 +8,7 @@ interface ReciterCardProps {
   albums: number;
   imageUrl: string;
   backgroundColor?: string;
+  slug?: string;
   onPress?: () => void;
 }
 
@@ -16,6 +17,7 @@ export function ReciterCard({
   albums,
   imageUrl,
   backgroundColor = "#3f3f46",
+  slug,
   onPress
 }: ReciterCardProps) {
   return (

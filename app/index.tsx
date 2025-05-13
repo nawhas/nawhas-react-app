@@ -2,16 +2,15 @@ import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { Hero } from '~/components/layout/hero';
 import { TopRecitersSection } from '~/components/reciters/top-reciters-section';
+import { router } from 'expo-router';
 
 export default function Screen() {
   const handleViewAllReciters = () => {
-    // Navigate to reciters page
-    console.log('Navigate to all reciters');
+    router.push('/reciters');
   };
 
-  const handleReciterPress = (reciterId: string) => {
-    // Navigate to reciter detail page
-    console.log('Navigate to reciter', reciterId);
+  const handleReciterPress = (slug: string) => {
+    router.push(`/reciters/${slug}`);
   };
 
   return (
