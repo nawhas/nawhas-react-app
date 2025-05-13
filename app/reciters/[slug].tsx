@@ -32,6 +32,11 @@ export default function ReciterDetailPage() {
     // Implementation for adding track would go here
   };
 
+  // Navigate to reciters list
+  const navigateToReciters = () => {
+    router.push('/reciters');
+  };
+
   return (
     <ScrollView className="flex-1 bg-background dark:bg-black">
       {/* Header with reciter info */}
@@ -39,7 +44,7 @@ export default function ReciterDetailPage() {
         <View className="max-w-7xl w-full mx-auto px-6">
           {/* Back button */}
           <TouchableOpacity 
-            onPress={() => router.back()}
+            onPress={navigateToReciters}
             className="flex-row items-center mb-6"
           >
             <ArrowLeft size={20} color="white" className="mr-2" />
