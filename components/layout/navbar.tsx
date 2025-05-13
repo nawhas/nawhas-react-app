@@ -133,7 +133,7 @@ export function Navbar({ searchPlaceholder = "Search for nawhas, reciters, or ly
       {/* Full-width navbar with background color */}
       <View className="w-full bg-background">
         {/* Contained navbar content with max width */}
-        <View className="max-w-screen-2xl mx-auto flex-row items-center justify-between py-4 px-6">
+        <View className="max-w-7xl w-full mx-auto flex-row items-center justify-between py-4 px-6">
           {/* Mobile menu icon - left side on mobile */}
           <TouchableOpacity 
             className="md:hidden h-10 w-10 rounded-md justify-center items-center" 

@@ -90,10 +90,84 @@ export const RECITERS_BY_SLUG = RECITERS.reduce((acc, reciter) => {
   return acc;
 }, {} as Record<string, typeof RECITERS[0]>);
 
-// Mock album data
-export const ALBUMS = [
-  { id: '1', title: 'Album 1', year: 2023, tracks: 12 },
-  { id: '2', title: 'Album 2', year: 2022, tracks: 10 },
-  { id: '3', title: 'Album 3', year: 2021, tracks: 8 },
-  { id: '4', title: 'Album 4', year: 2020, tracks: 14 },
+// Track type definition
+export interface Track {
+  id: string;
+  title: string;
+  hasLyrics?: boolean;
+  hasAudio?: boolean;
+}
+
+// Album type definition
+export interface Album {
+  id: string;
+  title: string;
+  year: number;
+  reciterId: string;
+  coverArt?: string;
+  tracks: Track[];
+}
+
+// Mock album data with tracks
+export const ALBUMS: Album[] = [
+  { 
+    id: '1', 
+    title: 'Hussain Zindabad', 
+    year: 2022, 
+    reciterId: '1', 
+    coverArt: 'https://nawhas.com/_nuxt/img/default-reciter-avatar.5d27d9e.png',
+    tracks: [
+      { id: '1-1', title: 'Ayam E Aza Alvida', hasLyrics: true, hasAudio: true },
+      { id: '1-2', title: 'Bhai Abbas', hasLyrics: true, hasAudio: true },
+      { id: '1-3', title: 'Farsh E Aza', hasLyrics: true, hasAudio: true },
+      { id: '1-4', title: 'Hussain Dil Na Torna', hasLyrics: true, hasAudio: true },
+      { id: '1-5', title: 'Hussain Is My Leader', hasLyrics: true, hasAudio: true },
+      { id: '1-6', title: 'Hussain Zindabad', hasLyrics: true, hasAudio: true },
+      { id: '1-7', title: 'Yad Kiya Hai Baba', hasLyrics: true, hasAudio: true },
+      { id: '1-8', title: 'Ye Arz e Karbala Hai', hasLyrics: true, hasAudio: true }
+    ] 
+  },
+  { 
+    id: '2', 
+    title: 'Karbala Ki Kahani', 
+    year: 2021, 
+    reciterId: '1', 
+    coverArt: 'https://nawhas.com/_nuxt/img/default-reciter-avatar.5d27d9e.png',
+    tracks: [
+      { id: '2-1', title: 'Karbala Ki Kahani', hasLyrics: true, hasAudio: true },
+      { id: '2-2', title: 'Main Hussain Hoon', hasLyrics: true, hasAudio: true },
+      { id: '2-3', title: 'Sakina Ki Jholi', hasLyrics: false, hasAudio: true },
+      { id: '2-4', title: 'Abbas Alamdar', hasLyrics: true, hasAudio: true }
+    ] 
+  },
+  { 
+    id: '3', 
+    title: 'Moula Ali', 
+    year: 2020, 
+    reciterId: '2', 
+    coverArt: 'https://nawhas.com/_nuxt/img/default-reciter-avatar.5d27d9e.png',
+    tracks: [
+      { id: '3-1', title: 'Moula Ali', hasLyrics: true, hasAudio: true },
+      { id: '3-2', title: 'Ya Ali Madad', hasLyrics: true, hasAudio: true },
+      { id: '3-3', title: 'Haider Ka Rutba', hasLyrics: true, hasAudio: true }
+    ] 
+  },
+  { 
+    id: '4', 
+    title: 'Ya Hussain', 
+    year: 2019, 
+    reciterId: '3', 
+    coverArt: 'https://nawhas.com/_nuxt/img/default-reciter-avatar.5d27d9e.png',
+    tracks: [
+      { id: '4-1', title: 'Ya Hussain', hasLyrics: true, hasAudio: true },
+      { id: '4-2', title: 'Sher-e-Khuda', hasLyrics: true, hasAudio: true },
+      { id: '4-3', title: 'Mera Imam', hasLyrics: true, hasAudio: true },
+      { id: '4-4', title: 'Karbala Ka Safar', hasLyrics: true, hasAudio: true }
+    ] 
+  }
 ]; 
+
+// Get albums by reciter ID
+export const getAlbumsByReciterId = (reciterId: string): Album[] => {
+  return ALBUMS.filter(album => album.reciterId === reciterId);
+}; 

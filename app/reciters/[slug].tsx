@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity, FlatList } from 'react-native';
 import { Text } from '~/components/ui/text';
 import { useLocalSearchParams, router } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
-import { RECITERS_BY_SLUG, ALBUMS } from '~/lib/mock-data';
+import { RECITERS_BY_SLUG, getAlbumsByReciterId } from '~/lib/mock-data';
+import { AlbumCard } from '~/components/reciters/album-card';
+import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function ReciterDetailPage() {
   // Get the reciter slug from the URL
@@ -12,12 +14,29 @@ export default function ReciterDetailPage() {
   
   // Get reciter data or use default if not found
   const reciter = RECITERS_BY_SLUG[reciterSlug] || RECITERS_BY_SLUG['tejani-brothers'];
+  
+  // Get albums for this reciter
+  const reciterAlbums = getAlbumsByReciterId(reciter.id);
+  
+  // Track whether we're using dark mode
+  const { isDarkColorScheme } = useColorScheme();
+
+  // Handlers for album actions
+  const handleEditAlbum = (albumId: string) => {
+    console.log('Edit album:', albumId);
+    // Implementation for editing album would go here
+  };
+
+  const handleAddTrack = (albumId: string) => {
+    console.log('Add track to album:', albumId);
+    // Implementation for adding track would go here
+  };
 
   return (
-    <ScrollView className="flex-1 bg-background">
+    <ScrollView className="flex-1 bg-background dark:bg-black">
       {/* Header with reciter info */}
-      <View style={{ backgroundColor: reciter.backgroundColor }} className="w-full pt-12 pb-6 px-6">
-        <View className="max-w-screen-lg mx-auto">
+      <View style={{ backgroundColor: reciter.backgroundColor }} className="w-full pt-12 pb-6">
+        <View className="max-w-7xl w-full mx-auto px-6">
           {/* Back button */}
           <TouchableOpacity 
             onPress={() => router.back()}
@@ -47,20 +66,18 @@ export default function ReciterDetailPage() {
         </View>
       </View>
 
-      {/* Albums section - placeholder */}
-      <View className="w-full px-6 py-8">
-        <View className="max-w-screen-lg mx-auto">
-          <Text className="text-2xl font-bold text-foreground mb-6">Albums</Text>
-          
-          {/* Placeholder for albums */}
-          <View className="space-y-4">
-            {ALBUMS.map(album => (
-              <View key={album.id} className="border border-border rounded-md p-4">
-                <Text className="font-semibold text-foreground">{album.title}</Text>
-                <Text className="text-muted-foreground">{album.year} • {album.tracks} tracks</Text>
-              </View>
-            ))}
-          </View>
+      {/* Albums section */}
+      <View className="w-full pb-20 bg-background dark:bg-black">
+        <View className="max-w-7xl w-full mx-auto px-6">
+          {reciterAlbums.map(album => (
+            <AlbumCard 
+              key={album.id}
+              album={album}
+              showAdminControls={true}
+              onEditAlbum={() => handleEditAlbum(album.id)}
+              onAddTrack={() => handleAddTrack(album.id)}
+            />
+          ))}
         </View>
       </View>
     </ScrollView>
