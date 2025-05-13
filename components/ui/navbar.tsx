@@ -8,6 +8,7 @@ import { Sun, Moon, Bell } from 'lucide-react-native';
 import { Portal } from '@rn-primitives/portal';
 import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
 import { cn } from '~/lib/utils';
+import { useThemeClass, themed } from '~/lib/theme';
 
 interface NavbarProps {
   searchPlaceholder?: string;
@@ -15,6 +16,7 @@ interface NavbarProps {
 
 export function Navbar({ searchPlaceholder = "Search for nawhas, reciters, or lyrics..." }: NavbarProps) {
   const { isDarkColorScheme, setColorScheme, colorScheme } = useColorScheme();
+  const { getThemeClass } = useThemeClass();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [profileIconPosition, setProfileIconPosition] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const profileIconRef = useRef<any>(null);
@@ -86,9 +88,9 @@ export function Navbar({ searchPlaceholder = "Search for nawhas, reciters, or ly
     right: 16,
     top: profileIconPosition.y > 0 ? profileIconPosition.y + 5 : 50,
     width: 256,
-    backgroundColor: isDarkColorScheme ? '#18181b' : '#ffffff', // zinc-900 for dark, white for light
+    backgroundColor: isDarkColorScheme ? '#18181b' : '#ffffff',
     borderWidth: 1,
-    borderColor: isDarkColorScheme ? '#27272a' : '#e5e7eb', // zinc-800 for dark, gray-200 for light
+    borderColor: isDarkColorScheme ? '#27272a' : '#e5e7eb',
     borderRadius: 6,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -104,14 +106,9 @@ export function Navbar({ searchPlaceholder = "Search for nawhas, reciters, or ly
   // Since system is not available, we'll show the automatic option as inactive
   const isSystemActive = false;
 
-  const activeButtonClass = isDarkColorScheme ? 'bg-blue-600' : 'bg-blue-500';
-  const inactiveButtonClass = isDarkColorScheme ? 'bg-zinc-800' : 'bg-gray-200';
-  const activeTextClass = "text-white";
-  const inactiveTextClass = isDarkColorScheme ? 'text-white' : 'text-gray-700';
-
   return (
     <View className="w-full">
-      <View className={`flex-row items-center justify-between px-4 py-3 ${isDarkColorScheme ? 'bg-zinc-900' : 'bg-white'}`}>
+      <View className={cn("flex-row items-center justify-between px-4 py-3", getThemeClass('primary'))}>
         {/* Logo and brand */}
         <View className="flex-row items-center">
           <View className="h-8 w-8 rounded-full bg-red-600 justify-center items-center mr-2">
@@ -133,12 +130,12 @@ export function Navbar({ searchPlaceholder = "Search for nawhas, reciters, or ly
         </View>
         
         {/* Search bar */}
-        <View className={`flex-row items-center ${isDarkColorScheme ? 'bg-zinc-800' : 'bg-gray-100'} rounded-full px-3 max-w-xs`}>
+        <View className={cn("flex-row items-center rounded-full px-3 max-w-xs", getThemeClass('secondary'))}>
           <Search size={18} className="text-gray-400 mr-2" />
           <TextInput
             placeholder={searchPlaceholder}
             placeholderTextColor="#9ca3af"
-            className={`py-1 ${isDarkColorScheme ? 'text-gray-300' : 'text-gray-700'} w-52`}
+            className={cn("py-1 w-52", getThemeClass('textMuted'))}
           />
         </View>
 
@@ -172,13 +169,13 @@ export function Navbar({ searchPlaceholder = "Search for nawhas, reciters, or ly
           >
             <View style={dropdownStyle}>
               {/* User info section */}
-              <View className={`p-4 border-b ${isDarkColorScheme ? 'border-zinc-800' : 'border-gray-200'}`}>
+              <View className={cn("p-4 border-b", getThemeClass('border'))}>
                 <View className="flex-row items-center mb-1">
                   <View className="h-10 w-10 rounded-full bg-gray-500 justify-center items-center mr-3">
                     <Text className="text-white font-bold">G</Text>
                   </View>
                   <View>
-                    <Text className={`font-bold text-base ${isDarkColorScheme ? 'text-white' : 'text-gray-900'}`}>Guest</Text>
+                    <Text className={cn("font-bold text-base", getThemeClass('text'))}>Guest</Text>
                     <Text className="text-gray-400 text-sm">Not logged in</Text>
                   </View>
                 </View>
@@ -186,35 +183,41 @@ export function Navbar({ searchPlaceholder = "Search for nawhas, reciters, or ly
                   <TouchableOpacity className="px-3 py-1 bg-orange-600 rounded">
                     <Text className="text-white font-medium text-sm">SIGN UP</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity className={`px-3 py-1 rounded border border-orange-600`}>
+                  <TouchableOpacity className="px-3 py-1 rounded border border-orange-600">
                     <Text className="text-orange-600 font-medium text-sm">LOG IN</Text>
                   </TouchableOpacity>
                 </View>
               </View>
               
               {/* Preferences section */}
-              <View className={`border-b ${isDarkColorScheme ? 'border-zinc-800' : 'border-gray-200'}`}>
+              <View className={cn("border-b", getThemeClass('border'))}>
                 <Text className="text-gray-400 text-xs px-4 py-2">PREFERENCES</Text>
                 <View className="px-4 py-2">
-                  <Text className={`mb-2 ${isDarkColorScheme ? 'text-white' : 'text-gray-900'}`}>Theme</Text>
+                  <Text className={cn("mb-2", getThemeClass('text'))}>Theme</Text>
                   <View className="flex-row">
                     <TouchableOpacity 
-                      className={`w-9 h-9 ${isLightActive ? activeButtonClass : inactiveButtonClass} rounded mr-1 justify-center items-center`}
+                      className={cn("w-9 h-9 rounded mr-1 justify-center items-center", 
+                        isLightActive ? getThemeClass('accent') : getThemeClass('inactive')
+                      )}
                       onPress={setLightTheme}
                     >
-                      <Sun size={18} className={isLightActive ? activeTextClass : inactiveTextClass} />
+                      <Sun size={18} className={isLightActive ? "text-white" : getThemeClass('textMuted')} />
                     </TouchableOpacity>
                     <TouchableOpacity 
-                      className={`w-9 h-9 ${isSystemActive ? activeButtonClass : inactiveButtonClass} rounded mx-1 justify-center items-center`}
+                      className={cn("w-9 h-9 rounded mx-1 justify-center items-center", 
+                        isSystemActive ? getThemeClass('accent') : getThemeClass('inactive')
+                      )}
                       onPress={setSystemTheme}
                     >
-                      <Bell size={18} className={isSystemActive ? activeTextClass : inactiveTextClass} />
+                      <Bell size={18} className={isSystemActive ? "text-white" : getThemeClass('textMuted')} />
                     </TouchableOpacity>
                     <TouchableOpacity 
-                      className={`w-9 h-9 ${isDarkActive ? activeButtonClass : inactiveButtonClass} rounded ml-1 justify-center items-center`}
+                      className={cn("w-9 h-9 rounded ml-1 justify-center items-center",
+                        isDarkActive ? getThemeClass('accent') : getThemeClass('inactive')
+                      )}
                       onPress={setDarkTheme}
                     >
-                      <Moon size={18} className={isDarkActive ? activeTextClass : inactiveTextClass} />
+                      <Moon size={18} className={isDarkActive ? "text-white" : getThemeClass('textMuted')} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -224,13 +227,13 @@ export function Navbar({ searchPlaceholder = "Search for nawhas, reciters, or ly
               <View>
                 <TouchableOpacity className="flex-row items-center px-4 py-3">
                   <Text className="text-xs bg-gray-600 px-1 rounded mr-2 text-white">v7.2.2</Text>
-                  <Text className={isDarkColorScheme ? 'text-white' : 'text-gray-900'}>What's new?</Text>
+                  <Text className={getThemeClass('text')}>What's new?</Text>
                 </TouchableOpacity>
                 <TouchableOpacity className="flex-row items-center px-4 py-3">
                   <View className="h-5 w-5 bg-gray-600 rounded-full justify-center items-center mr-2">
                     <Info size={14} className="text-white" />
                   </View>
-                  <Text className={isDarkColorScheme ? 'text-white' : 'text-gray-900'}>Report an issue</Text>
+                  <Text className={getThemeClass('text')}>Report an issue</Text>
                 </TouchableOpacity>
               </View>
             </View>
