@@ -6,9 +6,11 @@ import { Album, Track } from '~/lib/mock-data';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { NAV_THEME } from '~/lib/constants';
 import { cn } from '~/lib/utils';
+import { router } from 'expo-router';
 
 interface AlbumCardProps {
   album: Album;
+  reciterSlug: string;
   onEditAlbum?: () => void;
   onAddTrack?: () => void;
   showAdminControls?: boolean;
@@ -16,11 +18,16 @@ interface AlbumCardProps {
 
 export function AlbumCard({ 
   album, 
+  reciterSlug,
   onEditAlbum, 
   onAddTrack, 
   showAdminControls = false 
 }: AlbumCardProps) {
   const { isDarkColorScheme } = useColorScheme();
+  
+  const navigateToTrack = (track: Track) => {
+    router.push(`/reciters/${reciterSlug}/albums/${album.slug}/tracks/${track.slug}`);
+  };
   
   return (
     <View className="mb-8 w-full">
@@ -49,7 +56,8 @@ export function AlbumCard({
             key={track.id} 
             track={track} 
             trackNumber={index + 1} 
-            isLastTrack={index === album.tracks.length - 1} 
+            isLastTrack={index === album.tracks.length - 1}
+            onPress={() => navigateToTrack(track)}
           />
         ))}
       </View>
@@ -82,9 +90,10 @@ interface TrackRowProps {
   track: Track;
   trackNumber: number;
   isLastTrack?: boolean;
+  onPress?: () => void;
 }
 
-function TrackRow({ track, trackNumber, isLastTrack = false }: TrackRowProps) {
+function TrackRow({ track, trackNumber, isLastTrack = false, onPress }: TrackRowProps) {
   const { isDarkColorScheme } = useColorScheme();
   
   // Get colors from theme
@@ -92,31 +101,54 @@ function TrackRow({ track, trackNumber, isLastTrack = false }: TrackRowProps) {
   const iconColor = isDarkColorScheme ? '#ffffff' : NAV_THEME.light.text;
 
   return (
-    <View 
-      className={`flex-row items-center py-3 px-4 ${!isLastTrack ? 'border-b border-border dark:border-zinc-800' : ''}`}
+    <TouchableOpacity 
+      onPress={onPress}
+      activeOpacity={0.7}
     >
-      {/* Track number */}
-      <Text className="w-8 text-muted-foreground dark:text-gray-400 mr-2">{trackNumber}</Text>
-      
-      {/* Track title */}
-      <Text className="flex-1 text-foreground dark:text-white font-medium">{track.title}</Text>
-      
-      {/* Track actions */}
-      <View className="flex-row items-center">
-        {track.hasLyrics && (
-          <TouchableOpacity className="mx-2">
-            <MessageSquare size={20} color={lyricsIconColor} />
+      <View 
+        className={`flex-row items-center py-3 px-4 ${!isLastTrack ? 'border-b border-border dark:border-zinc-800' : ''}`}
+      >
+        {/* Track number */}
+        <Text className="w-8 text-muted-foreground dark:text-gray-400 mr-2">{trackNumber}</Text>
+        
+        {/* Track title */}
+        <Text className="flex-1 text-foreground dark:text-white font-medium">{track.title}</Text>
+        
+        {/* Track actions */}
+        <View className="flex-row items-center">
+          {track.hasLyrics && (
+            <TouchableOpacity 
+              className="mx-2"
+              onPress={(e) => {
+                e.stopPropagation();
+                // Handle lyrics action
+              }}
+            >
+              <MessageSquare size={20} color={lyricsIconColor} />
+            </TouchableOpacity>
+          )}
+          {track.hasAudio && (
+            <TouchableOpacity 
+              className="mx-2"
+              onPress={(e) => {
+                e.stopPropagation();
+                // Handle audio action
+              }}
+            >
+              <Volume2 size={20} color={iconColor} />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity 
+            className="ml-2"
+            onPress={(e) => {
+              e.stopPropagation();
+              // Handle favorite action
+            }}
+          >
+            <Heart size={20} color={iconColor} />
           </TouchableOpacity>
-        )}
-        {track.hasAudio && (
-          <TouchableOpacity className="mx-2">
-            <Volume2 size={20} color={iconColor} />
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity className="ml-2">
-          <Heart size={20} color={iconColor} />
-        </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 } 

@@ -78,6 +78,7 @@ export default function ReciterDetailPage() {
             <AlbumCard 
               key={album.id}
               album={album}
+              reciterSlug={reciterSlug}
               showAdminControls={true}
               onEditAlbum={() => handleEditAlbum(album.id)}
               onAddTrack={() => handleAddTrack(album.id)}
