@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TouchableOpacity, TextInput, StyleSheet, Platform, SafeAreaView } from 'react-native';
-import { Text } from './text';
+import { Text } from '~/components/ui/text';
 import { router } from 'expo-router';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { Search, Info, Menu, X } from 'lucide-react-native';
@@ -52,22 +52,25 @@ export function Navbar({ searchPlaceholder = "Search for nawhas, reciters, or ly
   };
   
   // Theme handlers
-  const setLightTheme = () => {
+  const setLightTheme = async () => {
     setColorScheme('light');
-    setAndroidNavigationBar('light');
+    // Use promise catch to handle any errors
+    setAndroidNavigationBar('light').catch(() => {});
     setShowProfileMenu(false);
   };
 
-  const setDarkTheme = () => {
+  const setDarkTheme = async () => {
     setColorScheme('dark');
-    setAndroidNavigationBar('dark');
+    // Use promise catch to handle any errors
+    setAndroidNavigationBar('dark').catch(() => {});
     setShowProfileMenu(false);
   };
 
-  const setSystemTheme = () => {
+  const setSystemTheme = async () => {
     // System theme is not directly supported in the current setup, so we'll default to dark
     setColorScheme('dark');
-    setAndroidNavigationBar('dark');
+    // Use promise catch to handle any errors
+    setAndroidNavigationBar('dark').catch(() => {});
     setShowProfileMenu(false);
   };
   

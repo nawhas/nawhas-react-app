@@ -10,7 +10,7 @@ import { useColorScheme } from '~/lib/useColorScheme';
 import { PortalHost } from '@rn-primitives/portal';
 import { ThemeToggle } from '~/components/ThemeToggle';
 import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
-import { Navbar } from '~/components/ui/navbar';
+import { Navbar } from '~/components/layout/navbar';
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,

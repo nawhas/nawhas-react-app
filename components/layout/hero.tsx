@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ImageBackground, TextInput } from 'react-native';
 import { Search } from 'lucide-react-native';
-import { Text } from './text';
+import { Text } from '~/components/ui/text';
 
 interface HeroProps {
   title?: string;
